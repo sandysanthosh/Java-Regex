@@ -1,0 +1,108 @@
+Summary of Regular Expression Constructs (Source: Oracle Website)
+Characters
+x	The character x
+\\	The backslash character
+\0n	The character with octal value 0n (0 <= n <= 7)
+\0nn	The character with octal value 0nn (0 <= n <= 7)
+\0mnn	The character with octal value 0mnn (0 <= m <= 3, 0 <= n <= 7)
+\xhh	The character with hexadecimal value 0xhh
+\uhhhh	The character with hexadecimal value 0xhhhh
+\x{h…h}	The character with hexadecimal value 0xh…h (Character.MIN_CODE_POINT <= 0xh…h <= Character.MAX_CODE_POINT)
+\t	The tab character (‘\u0009’)
+\n	The newline (line feed) character (‘\u000A’)
+\r	The carriage-return character (‘\u000D’)
+\f	The form-feed character (‘\u000C’)
+\a	The alert (bell) character (‘\u0007’)
+\e	The escape character (‘\u001B’)
+\cx	The control character corresponding to x
+ 
+
+Character classes
+[abc]	a, b, or c (simple class)
+[^abc]	Any character except a, b, or c (negation)
+[a-zA-Z]	a through z or A through Z, inclusive (range)
+[a-d[m-p]]	a through d, or m through p: [a-dm-p] (union)
+[a-z&&[def]]	d, e, or f (intersection)
+[a-z&&[^bc]]	a through z, except for b and c: [ad-z] (subtraction)
+[a-z&&[^m-p]]	a through z, and not m through p: [a-lq-z](subtraction)
+ 
+
+Predefined character classes
+.	Any character (may or may not match line terminators)
+\d	A digit: [0-9]
+\D	A non-digit: [^0-9]
+\s	A whitespace character: [ \t\n\x0B\f\r]
+\S	A non-whitespace character: [^\s]
+\w	A word character: [a-zA-Z_0-9]
+\W	A non-word character: [^\w]
+ 
+
+Boundary matchers
+^	The beginning of a line
+$	The end of a line
+\b	A word boundary
+\B	A non-word boundary
+\A	The beginning of the input
+\G	The end of the previous match
+\Z	The end of the input but for the final terminator, if any
+\z	The end of the input
+01
+import java.util.regex.Matcher;
+02
+import java.util.regex.Pattern;
+03
+ 
+04
+public class RegexMatches
+05
+{
+06
+    private static String pattern =  "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+07
+    private static Pattern mypattern = Pattern.compile(pattern);
+08
+     
+09
+    public static void main( String args[] ){
+10
+ 
+11
+        String valEmail1 = "testemail@domain.com";
+12
+        String invalEmail1 = "....@domain.com";
+13
+        String invalEmail2 = ".$$%%@domain.com";
+14
+        String valEmail2 = "test.email@domain.com";
+15
+ 
+16
+        System.out.println("Is Email ID1 valid? "+validateEMailID(valEmail1));
+17
+        System.out.println("Is Email ID1 valid? "+validateEMailID(invalEmail1));
+18
+        System.out.println("Is Email ID1 valid? "+validateEMailID(invalEmail2));
+19
+        System.out.println("Is Email ID1 valid? "+validateEMailID(valEmail2));
+20
+ 
+21
+    }
+22
+     
+23
+    public static boolean validateEMailID(String emailID) {
+24
+        Matcher mtch = mypattern.matcher(emailID);
+25
+        if(mtch.matches()){
+26
+            return true;
+27
+        }
+28
+        return false;
+29
+    }  
+30
+}
